@@ -6,6 +6,7 @@ License:	GPL v2+
 Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
 # Source0-md5:	cb762d14484795986fd909b48f1207b9
+Patch0:		locales.patch
 URL:		http://rpmrebuild.sourceforge.net
 Requires:	bash
 Requires:	cpio
@@ -22,6 +23,17 @@ installed.
 
 %prep
 %setup -qc
+%patch0 -p1
+
+# remove non-UTF8 man files
+rm -rf locale/fr_FR
+rm -rf man/fr_FR
+rm -rf plugins/man/fr_FR
+
+# move UTF8 man files to the correct location
+mv locale/{fr_FR.UTF-8,fr}
+mv man/{fr_FR.UTF-8,fr}
+mv plugins/man/{fr_FR.UTF-8,fr}
 
 %build
 %{__make}
@@ -37,16 +49,6 @@ awk '{if (NR==1) print "#!/bin/bash\n" $0; else print $0;}' < $RPM_BUILD_ROOT%{_
 mv $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src.new $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
 chmod a-w $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
 
-# remove non-UTF8 man files
-rm -f $RPM_BUILD_ROOT%{_mandir}/fr_FR/man1/{demo,nodoc,file2pacDep,set_tag,uniq}.plug.1rrp.gz
-rm -f $RPM_BUILD_ROOT%{_mandir}/fr_FR/man1/rpmrebuild{,_plugins}.1.gz
-rm -rf $RPM_BUILD_ROOT%{_mandir}/fr_FR/man1/
-
-# move UTF8 man files to the correct location
-install -d $RPM_BUILD_ROOT%{_mandir}/fr/man1/
-mv $RPM_BUILD_ROOT%{_mandir}/fr_FR.UTF-8/man1/*  $RPM_BUILD_ROOT%{_mandir}/fr/man1/
-rm -rf $RPM_BUILD_ROOT%{_mandir}/fr_FR.UTF-8/man1/
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -56,9 +58,8 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_prefix}/lib/rpmrebuild/
 %dir %{_prefix}/lib/rpmrebuild/plugins/
 %dir %{_prefix}/lib/rpmrebuild/locale/
-%dir %{_prefix}/lib/rpmrebuild/locale/fr_FR.UTF-8
+%dir %{_prefix}/lib/rpmrebuild/locale/fr
 %dir %{_prefix}/lib/rpmrebuild/locale/en
-%dir %{_prefix}/lib/rpmrebuild/locale/fr_FR
 %attr(755,root,root) %{_bindir}/rpmrebuild
 %attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/nodoc.sh
 %attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
@@ -90,8 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/rpmrebuild/plugins/un_prelink.plug
 %{_prefix}/lib/rpmrebuild/plugins/unset_tag.plug
 %{_prefix}/lib/rpmrebuild/locale/en/rpmrebuild.lang
-%{_prefix}/lib/rpmrebuild/locale/fr_FR.UTF-8/rpmrebuild.lang
-%{_prefix}/lib/rpmrebuild/locale/fr_FR/rpmrebuild.lang
+%{_prefix}/lib/rpmrebuild/locale/fr/rpmrebuild.lang
 %{_mandir}/fr/man1/compat_digest.plug.1rrp*
 %{_mandir}/fr/man1/demo.plug.1rrp*
 %{_mandir}/fr/man1/demofiles.plug.1rrp*
