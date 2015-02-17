@@ -18,6 +18,8 @@ Requires:	textutils
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		_appdir	%{_prefix}/lib/%{name}
+
 %description
 A tool to build an RPM file from a package that has already been
 installed.
@@ -53,62 +55,18 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS Changelog COPYING COPYRIGHT News Todo README
-%dir %{_prefix}/lib/rpmrebuild/
-%dir %{_prefix}/lib/rpmrebuild/plugins/
-%dir %{_prefix}/lib/rpmrebuild/locale/
-%dir %{_prefix}/lib/rpmrebuild/locale/fr
-%dir %{_prefix}/lib/rpmrebuild/locale/en
 %attr(755,root,root) %{_bindir}/rpmrebuild
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/nodoc.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_extract_tags.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/processing_func.src
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_rpmqf.src
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_buildroot.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/spec_func.src
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_lib.src
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/uniq.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/un_prelink.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/unset_tag.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/demo.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/set_tag.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/file2pacDep.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/demofiles.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_ghost.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/rpmrebuild_files.sh
-%attr(755,root,root) %{_prefix}/lib/rpmrebuild/plugins/compat_digest.sh
-%{_prefix}/lib/rpmrebuild/VERSION
-%{_prefix}/lib/rpmrebuild/plugins/set_tag.plug
-%{_prefix}/lib/rpmrebuild/plugins/compat_digest.plug
-%{_prefix}/lib/rpmrebuild/plugins/nodoc.plug
-%{_prefix}/lib/rpmrebuild/plugins/demo.plug
-%{_prefix}/lib/rpmrebuild/plugins/file2pacDep.plug
-%{_prefix}/lib/rpmrebuild/plugins/uniq.plug
-%{_prefix}/lib/rpmrebuild/plugins/demofiles.plug
-%{_prefix}/lib/rpmrebuild/plugins/un_prelink.plug
-%{_prefix}/lib/rpmrebuild/plugins/unset_tag.plug
-%{_prefix}/lib/rpmrebuild/locale/en/rpmrebuild.lang
-%{_prefix}/lib/rpmrebuild/locale/fr/rpmrebuild.lang
-%{_mandir}/fr/man1/compat_digest.plug.1rrp*
-%{_mandir}/fr/man1/demo.plug.1rrp*
-%{_mandir}/fr/man1/demofiles.plug.1rrp*
-%{_mandir}/fr/man1/file2pacDep.plug.1rrp*
-%{_mandir}/fr/man1/nodoc.plug.1rrp*
-%{_mandir}/fr/man1/rpmrebuild.1*
-%{_mandir}/fr/man1/rpmrebuild_plugins.1*
-%{_mandir}/fr/man1/set_tag.plug.1rrp*
-%{_mandir}/fr/man1/un_prelink.plug.1rrp*
-%{_mandir}/fr/man1/uniq.plug.1rrp*
-%{_mandir}/fr/man1/unset_tag.plug.1rrp*
-%{_mandir}/man1/compat_digest.plug.1rrp*
-%{_mandir}/man1/demo.plug.1rrp*
-%{_mandir}/man1/demofiles.plug.1rrp*
-%{_mandir}/man1/file2pacDep.plug.1rrp*
-%{_mandir}/man1/nodoc.plug.1rrp*
-%{_mandir}/man1/rpmrebuild.1*
-%{_mandir}/man1/rpmrebuild_plugins.1*
-%{_mandir}/man1/set_tag.plug.1rrp*
-%{_mandir}/man1/un_prelink.plug.1rrp*
-%{_mandir}/man1/uniq.plug.1rrp*
-%{_mandir}/man1/unset_tag.plug.1rrp*
+%{_mandir}/man1/*.1*
+%lang(fr) %{_mandir}/fr/man1/*.1*
+%dir %{_appdir}
+%{_appdir}/VERSION
+%attr(755,root,root) %{_appdir}/*.sh
+%attr(755,root,root) %{_appdir}/*.src
+%dir %{_appdir}/plugins
+%{_appdir}/plugins/*.plug
+%attr(755,root,root) %{_appdir}/plugins/*.sh
+%dir %{_appdir}/locale
+%dir %{_appdir}/locale/en
+%{_appdir}/locale/en/rpmrebuild.lang
+%lang(fr) %dir %{_appdir}/locale/fr
+%lang(fr) %{_appdir}/locale/fr/rpmrebuild.lang
