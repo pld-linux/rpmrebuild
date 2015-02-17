@@ -1,7 +1,10 @@
+# TODO
+# - broken because rpm5 still does not support BuildArch: %{_target_cpu} on top level package (rpm4 works fine)
+#   http://comments.gmane.org/gmane.comp.package-management.rpm.devel/2681 (reported in 16 Jun 2008)
 Summary:	A tool to build rpm file from rpm database
 Name:		rpmrebuild
 Version:	2.11
-Release:	1
+Release:	0.1
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
