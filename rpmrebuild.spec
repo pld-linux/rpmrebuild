@@ -7,7 +7,8 @@ Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
 # Source0-md5:	cb762d14484795986fd909b48f1207b9
 Patch0:		locales.patch
-URL:		http://rpmrebuild.sourceforge.net
+URL:		http://rpmrebuild.sourceforge.net/
+BuildRequires:	sed >= 4.0
 Requires:	bash
 Requires:	cpio
 Requires:	grep
@@ -35,6 +36,9 @@ mv locale/{fr_FR.UTF-8,fr}
 mv man/{fr_FR.UTF-8,fr}
 mv plugins/man/{fr_FR.UTF-8,fr}
 
+# fix for .src without shebangs
+%{__sed} -i -e '1i#!/bin/bash' rpmrebuild_parser.src
+
 %build
 %{__make}
 
@@ -42,12 +46,6 @@ mv plugins/man/{fr_FR.UTF-8,fr}
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
-
-# fix for .src without shebangs
-chmod a+w $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
-awk '{if (NR==1) print "#!/bin/bash\n" $0; else print $0;}' < $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src > $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src.new
-mv $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src.new $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
-chmod a-w $RPM_BUILD_ROOT%{_prefix}/lib/rpmrebuild/rpmrebuild_parser.src
 
 %clean
 rm -rf $RPM_BUILD_ROOT
