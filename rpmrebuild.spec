@@ -10,6 +10,7 @@ Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
 # Source0-md5:	cb762d14484795986fd909b48f1207b9
 Patch0:		locales.patch
+Patch1:		%{name}-spec-arch.patch
 URL:		http://rpmrebuild.sourceforge.net/
 BuildRequires:	sed >= 4.0
 Requires:	bash
@@ -30,6 +31,7 @@ installed.
 %prep
 %setup -qc
 %patch0 -p1
+%patch1 -p1
 
 # remove non-UTF8 man files
 rm -rf locale/fr_FR

@@ -1,0 +1,12 @@
+diff -ruNp rpmrebuild-2.11.orig/rpmrebuild_rpmqf.src rpmrebuild-2.11/rpmrebuild_rpmqf.src
+--- rpmrebuild-2.11.orig/rpmrebuild_rpmqf.src	2013-07-27 17:52:08.000000000 +0200
++++ rpmrebuild-2.11/rpmrebuild_rpmqf.src	2018-10-18 23:33:54.080468041 +0200
+@@ -45,7 +45,7 @@ echo '%|BUILDHOST?{#dummy}|\
+ %|SIZE?{[#SIZE:           %{SIZE}]}|\
+ %|ARCHIVESIZE?{[#ARCHIVESIZE:           %{ARCHIVESIZE}]}|\
+ %|ARCH?{[#ARCH:         %{ARCH}]}:{#ARCH:        noarch}|\
+-%|ARCH?{[BuildArch:     %{ARCH}]}:{BuildArch:    noarch}|\
++%|ARCH?{[]}:{BuildArch:    noarch}|\
+ %|NAME?{[Name:          %{NAME}]}|\
+ %|VERSION?{[Version:       %{VERSION}]}|\
+ %|RELEASE?{[Release:       %{RELEASE}]}|\
