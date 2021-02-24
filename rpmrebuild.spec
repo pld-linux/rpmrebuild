@@ -1,14 +1,11 @@
-# TODO
-# - broken because rpm5 still does not support BuildArch: %{_target_cpu} on top level package (rpm4 works fine)
-#   http://comments.gmane.org/gmane.comp.package-management.rpm.devel/2681 (reported in 16 Jun 2008)
 Summary:	A tool to build rpm file from rpm database
 Name:		rpmrebuild
-Version:	2.11
-Release:	0.1
+Version:	2.16
+Release:	1
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
-# Source0-md5:	cb762d14484795986fd909b48f1207b9
+# Source0-md5:	f924f30767dd87ab321e887fcea1cc57
 Patch0:		locales.patch
 Patch1:		%{name}-spec-arch.patch
 URL:		http://rpmrebuild.sourceforge.net/
@@ -16,7 +13,7 @@ BuildRequires:	sed >= 4.0
 Requires:	bash
 Requires:	cpio
 Requires:	grep
-Requires:	rpm >= 4.0
+Requires:	rpm >= 1:4.0
 Requires:	rpm-build
 Requires:	textutils
 BuildArch:	noarch
@@ -34,17 +31,36 @@ installed.
 %patch1 -p1
 
 # remove non-UTF8 man files
-rm -rf locale/fr_FR
-rm -rf man/fr_FR
-rm -rf plugins/man/fr_FR
+%{__rm} -r locale/fr_FR
+%{__rm} -r man/fr_FR
+%{__rm} -r plugins/man/fr_FR
 
 # move UTF8 man files to the correct location
-mv locale/{fr_FR.UTF-8,fr}
-mv man/{fr_FR.UTF-8,fr}
-mv plugins/man/{fr_FR.UTF-8,fr}
+%{__mv} locale/{fr_FR.UTF-8,fr}
+%{__mv} man/{fr_FR.UTF-8,fr}
+%{__mv} plugins/man/{fr_FR.UTF-8,fr}
 
-# fix for .src without shebangs
-%{__sed} -i -e '1i#!/bin/bash' rpmrebuild_parser.src
+%{__sed} -E -i -e '1s,#!\s*/usr/bin/env\s+(bash|sh)(\s|$),#!/bin/bash\1,' \
+      plugins/compat_digest.sh \
+      plugins/demo.sh \
+      plugins/demofiles.sh \
+      plugins/file2pacDep.sh \
+      plugins/nodoc.sh \
+      plugins/set_tag.sh \
+      plugins/un_prelink.sh \
+      plugins/uniq.sh \
+      plugins/unset_tag.sh \
+      processing_func.src \
+      rpmrebuild \
+      rpmrebuild.sh \
+      rpmrebuild_buildroot.sh \
+      rpmrebuild_extract_tags.sh \
+      rpmrebuild_files.sh \
+      rpmrebuild_ghost.sh \
+      rpmrebuild_lib.src \
+      rpmrebuild_parser.src \
+      rpmrebuild_rpmqf.src \
+      spec_func.src
 
 %build
 %{__make}
@@ -62,9 +78,9 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS Changelog COPYING COPYRIGHT News Todo README
 %attr(755,root,root) %{_bindir}/rpmrebuild
 %{_mandir}/man1/*.1*
-%lang(fr) %{_mandir}/fr/man1/*.1*
 %dir %{_appdir}
-%{_appdir}/VERSION
+%{_appdir}/Version
+%{_appdir}/optional_tags.cfg
 %attr(755,root,root) %{_appdir}/*.sh
 %attr(755,root,root) %{_appdir}/*.src
 %dir %{_appdir}/plugins
@@ -73,5 +89,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_appdir}/locale
 %dir %{_appdir}/locale/en
 %{_appdir}/locale/en/rpmrebuild.lang
+%lang(fr) %{_mandir}/fr/man1/*.1*
 %lang(fr) %dir %{_appdir}/locale/fr
 %lang(fr) %{_appdir}/locale/fr/rpmrebuild.lang
