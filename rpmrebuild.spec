@@ -1,7 +1,7 @@
 Summary:	A tool to build rpm file from rpm database
 Name:		rpmrebuild
 Version:	2.16
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	http://downloads.sourceforge.net/rpmrebuild/%{name}-%{version}.tar.gz
@@ -40,7 +40,7 @@ installed.
 %{__mv} man/{fr_FR.UTF-8,fr}
 %{__mv} plugins/man/{fr_FR.UTF-8,fr}
 
-%{__sed} -E -i -e '1s,#!\s*/usr/bin/env\s+(bash|sh)(\s|$),#!/bin/bash\1,' \
+%{__sed} -E -i -e '1s,#!\s*/usr/bin/env\s+(bash|sh)(\s|$),#!/bin/bash\2,' \
       plugins/compat_digest.sh \
       plugins/demo.sh \
       plugins/demofiles.sh \
