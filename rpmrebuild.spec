@@ -27,8 +27,8 @@ installed.
 
 %prep
 %setup -qc
-%patch0 -p1
-%patch1 -p1
+%patch -P0 -p1
+%patch -P1 -p1
 
 # remove non-UTF8 man files
 %{__rm} -r locale/fr_FR
